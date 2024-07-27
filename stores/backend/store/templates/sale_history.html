@@ -1,0 +1,72 @@
+{% extends 'base.html' %}
+{% load custom_filters %}
+{% load static %}
+
+{% block content %}
+<div class="container mt-4">
+    <h2 class="text-dark">Sales History</h2>
+
+    <form method="get" class="mb-4">
+        <div class="row">
+            <div class="col-md-4  ">
+                <label for="start_date " class="form-label text-dark">Start Date:</label>
+                <input type="date" id="start_date" name="start_date" class="form-control" value="{{ start_date }}">
+            </div>
+            <div class="col-md-4 ">
+                <label for="end_date" class="form-label text-dark">End Date:</label>
+                <input type="date" id="end_date" name="end_date" class="form-control" value="{{ end_date }}">
+            </div>
+            <div class="col-md-4 d-flex align-items-end">
+                <button type="submit" class="btn btn-primary">Filter</button>
+            </div>           
+        </div>
+    </form>
+
+
+    <div class="row mb-4 text-dark" >
+        <div class="col-md-6">
+            <h4>All-Time Total Sales: ${{ all_time_total|floatformat:2 }}</h4>
+        </div>
+        <div class="col-md-6">
+            <h4>Filtered Total Sales: ${{ filtered_total|floatformat:2 }}</h4>
+        </div>
+    </div>
+    <div class="row mb-4">
+        <div class="col-md-4">
+            <a href="{% url 'application:export_sales_excel' %}{% if request.GET.start_date or request.GET.end_date %}?start_date={{ request.GET.start_date }}&end_date={{ request.GET.end_date }}{% endif %}" class="btn btn-success">
+                Export to Excel
+            </a>
+        </div>
+    </div>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Date</th>
+                <th>Product</th>
+                <th>Category</th>
+                <th>Brand</th>
+                <th>Quantity</th>
+                <th>Unit Price</th>
+                <th>Total Price</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for sale in sales %}
+            <tr>
+                <td>{{ sale.sale_date|date:"Y-m-d H:i" }}</td>
+                <td>{{ sale.product.product_name }}</td>
+                <td>{{ sale.product.brand.category.category_name }}</td>
+                <td>{{ sale.product.brand.brand_name }}</td>
+                <td>{{ sale.quantity_sold }}</td>
+                <td>${{ sale.product.sale_price|floatformat:2 }}</td>
+                <td>${{ sale.quantity_sold|multiply:sale.product.sale_price|floatformat:2 }}</td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="7" class="text-center">No sales found.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

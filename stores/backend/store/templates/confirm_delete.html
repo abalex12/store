@@ -1,0 +1,93 @@
+{% extends 'base.html' %}
+{% load static %}
+<!-- <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Delete Confirmation</title>
+    <link rel="stylesheet" href="{% static 'your_app/css/styles.css' %}">
+    
+</head>
+<body> -->
+    {% block content %}
+    <style>
+        .container {
+            max-width: 800px;
+            /* margin: auto;
+            padding: 20px; */
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            /* box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); */
+            background-color: #ffffff;
+            color: #000001;
+        }
+        .brand {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            /* margin-bottom: 10px;
+            padding: 10px;
+            border-bottom: 1px solid #ccc; */
+        }
+        .brand h2 {
+            margin: 0 0 10px;
+        }
+        .product {
+            display: flex;
+            flex-wrap: wrap;
+            /* gap: 10px; */
+            /* margin-bottom: 10px; */
+        }
+        .product-item {
+            flex: 1 1 calc(50% - 10px);
+            /* padding: 10px; */
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            background-color: #fff;
+        }
+        .actions {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 20px;
+        }
+        .actions button, .actions a {
+            padding: 10px 20px;
+            text-align: center;
+            text-decoration: none;
+            border: none;
+            border-radius: 5px;
+            background-color: #007bff;
+            color: #fff;
+            cursor: pointer;
+        }
+        .actions a {
+            background-color: #000001;
+        }
+    </style>
+<div class="container">
+    <h2 class="text-danger">Are you sure you want to delete the category "{{ object.category_name }}"?</h2>
+    <h3 class="text-danger">The following products will also be deleted</h3>
+    {% for brand in brand %}
+        <div class="brand">
+            <h2>{{ brand.brand_name }}</h2>
+            <div class="product">
+                {% for product in product %}
+                    {% if product.brand == brand %}
+                        <div class="product-item">
+                            <p>{{ product.product_name }}</p>
+                        </div>
+                    {% endif %}
+                {% endfor %}
+            </div>
+        </div>
+    {% endfor %}
+    <form method="post" class="actions">
+        {% csrf_token %}
+        <button type="submit">Confirm</button>
+        <a href="{% url 'application:category' %}">Cancel</a>
+    </form>
+</div>
+{% endblock %}
+</body>
+</html>

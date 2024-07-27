@@ -1,0 +1,110 @@
+{% load static %}
+{% load custom_tags %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Electronic Store</title>
+    <!-- <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"> -->
+    <!-- <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet"> -->
+    <link rel="stylesheet" href="{% static 'asset/fontawesome/css/all.min.css' %}">
+    <link rel="stylesheet" href="{% static 'asset/bootstrap/css/bootstrap.min.css' %}">
+    <link rel="shortcut icon" href="{% static 'asset/img/logo.jpeg' %}" type="image/png">
+    <link rel="icon" href="{% static 'asset/img/logo.jpeg' %}" sizes="32x32" type="image/png">
+
+    <link rel="stylesheet" href="{% static 'asset/css/style.css' %}">
+    <style>
+      
+    </style>
+</head>
+<body>
+    <nav class="sidebar col-md-3 col-lg-2">
+        <div class="text-center mb-4">
+            <img src="{% static 'asset/img/logo.jpeg' %}" alt="Store Logo" class="img-fluid rounded-circle" style="max-width: 120px;">
+        </div>
+        <a class="sidebar-link {% active_link 'category' %}" href="{% url 'application:category' %}">
+            <i class="fas fa-cash-register me-2"></i> Sell
+        </a>
+        <a class="sidebar-link {% active_link 'inventory_list' %}" href="{% url 'application:inventory_list' %}">
+            <i class="fas fa-boxes me-2"></i> Inventory
+        </a>
+        <a class="sidebar-link {% active_link 'orders' %}" href="#orders">
+            <i class="fas fa-shopping-cart me-2"></i> Purchase
+        </a>
+        <a class="sidebar-link {% active_link 'sale_history' %}" href="{% url 'application:sale_history' %}">
+            <i class="fas fa-chart-bar me-2"></i> Sale History
+        </a>
+        <a class="sidebar-link {% active_link 'settings' %}" href="#settings">
+            <i class="fas fa-cog me-2"></i> Settings
+        </a>
+        <a class="sidebar-link {% active_link 'categories/add' %}" href="{% url 'application:add_category' %}">
+            <i class="fas fa-cog me-2"></i> Add Items
+        </a>
+    </nav>
+    <div class="toast-container position-fixed top-0 end-0 p-3">
+        {% if messages %}
+            {% for message in messages %}
+                <div class="toast" role="alert" aria-live="assertive" aria-atomic="true" data-bs-delay="5000">
+                    <div class="toast-header {% if message.tags %}bg-{{ message.tags }}{% endif %}">
+                        <strong class="me-auto text-dark">Message</strong>
+                        <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+                    </div>
+                    <div class="toast-body bg-white text-dark">
+                        {{ message }}
+                    </div>
+                </div>
+            {% endfor %}
+        {% endif %}
+    </div>
+    <main class="content-wrapper">
+        <header class="header d-flex justify-content-between align-items-center">
+            <div class="d-flex align-items-center">
+                <button class="toggle-sidebar btn btn-accent me-3" id="toggleSidebar">
+                    <i class="fas fa-bars"></i>
+                </button>
+            </div>
+            <h1 class="h3 mb-0"> Electronics Store </h1>
+            <div class="user-info">
+                {% if user.is_authenticated %}
+                    <div class="dropdown">
+                        <button class="btn btn-accent dropdown-toggle d-flex align-items-center" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+                            <img src="{% if user.profile.photo %}{{ user.profile.photo.url }}{% else %}https://via.placeholder.com/40{% endif %}" 
+                                 alt="User Avatar" 
+                                 class="user-avatar rounded-circle me-2">
+                            <span>{{ user.username }}</span>
+                        </button>
+                        <ul class="dropdown-menu dropdown-menu-end shadow" aria-labelledby="dropdownMenuButton">
+                            <li><a class="dropdown-item" href="#"><i class="fas fa-user me-2"></i>Profile</a></li>
+                            <li><a class="dropdown-item" href="#"><i class="fas fa-cog me-2"></i>Settings</a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item" href="{% url 'application:logout' %}"><i class="fas fa-sign-out-alt me-2"></i>Logout</a></li>
+                        </ul>
+                    </div>
+                {% else %}
+                    <a href="#" class="btn btn-accent">Login</a>
+                {% endif %}
+            </div>
+        </header>
+        
+        <div class="content-area">
+            {% block content %}
+            {% endblock %}
+        </div>
+        
+        <footer class="footer text-center">
+            <p class="mb-1">&copy; {{ current_year }} Electronic Shop. All rights reserved.</p>
+            <p class="mb-0">
+                <a href="#" class="text-light me-3">Privacy Policy</a>
+                <a href="#" class="text-light me-3">Terms of Service</a>
+                <a href="#" class="text-light">Contact Us</a>
+            </p>
+        </footer>
+    </main>
+    <!-- Bootstrap JS -->
+    <script src="{% static 'asset/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+
+    <!-- <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script> -->
+    <script src="{% static 'asset/js/toggle.js' %}"></script>
+</body>
+</html>

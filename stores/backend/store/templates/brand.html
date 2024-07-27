@@ -1,0 +1,61 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<div class="container-fluid">
+    <div class="row justify-content-center">
+        <div class="col-lg-10">
+            <div class="header my-4">
+                <h3 class="text-primary">Select Brand for {{ category }}</h3>
+            </div>
+            <a href="{% url 'application:category' %}" class="btn btn-outline-secondary mb-4">
+                <i class="fas fa-arrow-left mr-2"></i>Back to Categories
+            </a>
+            {% if user.is_authenticated %}
+            {% if user_role == "Admin" %}
+            <div class="row mb-4">
+                <div class="col-md-4">
+                    <a href="{% url 'application:add_brand' category.id %}" class="btn btn-success">Add New Brand</a>
+                </div>
+            </div>
+            {% endif %}
+            {% endif %}
+            <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+                {% for brand in brands %}
+                <div class="col">
+                    <a href="{% url 'application:product' brand.pk %}" class="text-decoration-none">
+                        <div class="card h-100 custom-card">
+                            <div class="image-container">
+                 
+                                {% if brand.brand_name.photo %}
+                                <img src="{{ brand.brand_name.photo.url }}" class="card-img-top custom-image" alt="{{ brand.brand_name }}">
+                                {% else %}
+                                <img src="{% static 'asset/img/download.jpeg' %}" class="card-img-top custom-image" alt="{{ brand.brand_name }}">
+                                {% endif %}
+                                <div class="badge-container">
+                                    <span class="badge bg-primary rounded-pill">Brand</span>
+                                </div>
+                                <div class="overlay">
+                                    <h5 class="overlay-text">{{ brand.brand_name }}</h5>
+                                    {% if user.is_authenticated %}
+                                    {% if user_role == "Admin" %}
+                                    <div class="badge-container">
+                                        <span class="badge bg-primary rounded-pill">
+                                            <a href="{% url 'application:edit_brand' brand.pk %}" class="btn btn-success mt-auto mb-auto">Edit Brand</a>
+                                        </span>
+                                    </div>
+                                    {% endif %}
+                                    {% endif %}
+                                </div>
+                            </div>
+                            <div class="card-body">
+                                <h5 class="card-title text-center">{{ brand.brand_name }}</h5>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

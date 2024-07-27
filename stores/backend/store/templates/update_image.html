@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<style>
+  body{
+    color: black;
+  }
+  .button, input, optgroup, select, textarea{
+    color: black;
+  }
+</style>
+<div class="container mt-3">
+  <h2 class="text-white bg-primary p-3" >Update {{ object|capfirst }} Image</h2>
+  <form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    {% for field in form %}
+      <div class="form-group mb-3">
+      <label for="{{ field.id_for_label }}" class="form-label text-dark">{{ field.label }}</label>
+        {{ field|safe }}
+      </div>
+    {% endfor %}
+    
+    <button class="btn btn-success" type="submit">Update Image</button>
+  </form>
+</div>
+{% endblock %}
+

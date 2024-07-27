@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<style>
+    button, input, optgroup, select, textarea{
+    border-color: rgb(0, 0, 0);
+    border-radius: 10px;
+    margin: 0;
+    font-family: inherit;
+    font-size: inherit;
+    line-height: inherit;
+    color: black;
+
+    }
+
+</style>
+<div class="container mt-5">
+    <h2 class="text-white bg-primary p-3">{% if is_edit %}Edit Product {% else %}Add New Product to {{ brand.brand_name }} {% endif %}</h2>
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <h3 class="text-dark">product Details</h3>
+        {{ form.non_field_errors }}
+        {% for field in form %}
+            <div class="form-group mb-3">
+            <label for="{{ field.id_for_label }}" class="form-label text-dark">{{ field.label }}</label>
+            {{ field|safe }}
+                {% if field.errors %}
+                    <div class="text-danger">
+                        {{ field.errors }}
+                    </div>
+                {% endif %}
+            </div>
+        {% endfor %}
+        <button type="submit" class="btn btn-success">{% if is_edit %}Edit Product {% else %}Add Product {% endif %}</button>
+        
+    </form>
+    
+</div>
+{% endblock %}

@@ -1,0 +1,55 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<style>
+    .content-area {
+        background-color: #1a1a2e;
+    }
+    .card {
+        background-color: #16213e;
+        color: #f4f4f4;
+    }
+    .card-img-top {
+        height: 200px;
+        object-fit: cover;
+    }
+</style>
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-5">
+                            <div class="image-container position-relative">
+                                {% if product.photo %}
+                                <img src="{{ product.photo.url }}" class="card-img-top rounded" alt="{{ product.product_name }}">
+                                {% else %}
+                                <img src="{% static 'asset/img/download.jpeg' %}" class="card-img-top rounded" alt="{{ product.product_name }}">
+                                {% endif %}
+                                <div class="position-absolute top-0 start-0 m-2">
+                                    <span class="badge bg-primary rounded-pill">Product</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-7">
+                            <h2 class="card-title mb-4">Confirm Sale</h2>
+                            <p class="card-text">Are you sure you want to sell <strong>{{ quantity }}</strong> {{ brand.brand_name }} <strong>{{ product.product_name }}</strong>?</p>
+                            <form method="post" action="{% url 'application:make_sale' %}">
+                                {% csrf_token %}
+                                <input type="hidden" name="product_id" value="{{ product.id }}">
+                                <input type="hidden" name="quantity" value="{{ quantity }}">
+                                <input type="hidden" name="confirm" value="true">
+                                <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-4">
+                                    <button type="submit" class="btn btn-primary me-md-2">Confirm Sale</button>
+                                    <a href="{% url 'application:product' brand_id=product.brand.id %}" class="btn btn-secondary">Cancel</a>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

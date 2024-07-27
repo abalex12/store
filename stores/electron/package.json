@@ -1,0 +1,35 @@
+{
+  "name": "electronics_store",
+  "version": "1.0.0",
+  "description": "A brief description of your app",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron .",
+    "pack": "electron-builder --dir",
+    "dist": "electron-builder"
+  },
+  "author": "Abraham",
+  "license": "MIT",
+  "dependencies": {
+    "electron": "^31.2.1"
+  },
+  "devDependencies": {
+    "electron-builder": "^23.0.0"
+  },
+  "build": {
+    "appId": "com.yourdomain.myapp",
+    "productName": "My Electron App",
+    "directories": {
+      "buildResources": "assets"
+    },
+    "win": {
+      "icon": "assets/icon.ico"
+    },
+    "mac": {
+      "icon": "assets/icon.icns"
+    },
+    "linux": {
+      "icon": "assets/icon.png"
+    }
+  }
+}

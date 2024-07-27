@@ -1,0 +1,63 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<div class="container-fluid">
+    <div class="row justify-content-center">
+        <div class="col-lg-10">
+            <div class="header my-4">
+                <h3 >Select Category</h3>
+            </div>
+            {% if user.is_authenticated %}
+            {% if user_role == "Admin" %}
+                <div class="row mb-4">
+                    <div class="col-md-4">
+                        <a href="{% url 'application:add_category' %}" class="btn btn-success">Add New Category</a>
+                    </div>
+                </div>
+            {% endif %}
+           {% endif %}
+        
+            <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+                {% for category in categories %}
+                <div class="col">
+                    <a href="{% url 'application:brands' category.pk %}" class="text-decoration-none">
+                        <div class="card h-100 custom-card">
+                            <div class="image-container">
+                                {% if category.photo %}
+                                <img src="{{ category.photo.url }}" class="card-img-top custom-image" alt="{{ category.category_name }}">
+                                {% else %}
+                                <img src="{% static 'asset/img/download.jpeg' %}" class="card-img-top custom-image" alt="{{ category.category_name }}">
+                                {% endif %}
+                                <div class="badge-container">
+                                    <span class="badge bg-primary rounded-pill">Category</span>
+                                    
+                                </div>
+                                <div class="overlay">
+                                    <h5 class="overlay-text">{{ category.category_name }}</h5>    
+                                </div>
+                            </div>
+                            <div class="card-body">
+                                <h5 class="card-title text-center">{{ category.category_name }}</h5>
+                            </div>
+                            {% if user_role == "Admin" %}
+                            <div class="card-body d-flex justify-content-end">
+                                <span class="badge rounded-pill">
+                                    <a href="{% url 'application:edit_category' category.pk %}" class="btn btn-success mt-auto mb-auto">Edit</a>
+                                </span>
+                                <span class="badge rounded-pill">
+                                    <a href="{% url 'application:category-delete' category.pk %}" class="btn btn-danger mt-auto mb-auto">Delete</a>
+                                </span>                 
+                            </div>
+                            {% endif %}
+                            
+                        </div>
+                    </a>
+                   
+                </div>
+                
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,137 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en-us" >
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+
+    <title>Log in |</title>
+
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="/static/vendor/fontawesome-free/css/all.min.css">
+
+    <!-- Bootstrap and adminLTE -->
+    <link rel="stylesheet" href="/static/vendor/adminlte/css/adminlte.min.css">
+
+    <!-- Bootswatch theme -->
+    
+
+    
+
+    <!-- Custom fixes for django -->
+    <link rel="stylesheet" href="/static/jazzmin/css/main.css">
+
+    
+
+    <!-- favicons -->
+    <link rel="shortcut icon" href="/static/asset/img/logo.jpeg" type="image/png">
+    <link rel="icon" href="/static/asset/img/logo.jpeg" sizes="32x32" type="image/png">
+
+    
+    <!-- Google Font: Source Sans Pro -->
+    <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
+    
+
+     
+     
+</head>
+<body class="hold-transition jazzmin-login-page">
+
+<div class="login-box">
+    <div class="login-logo">
+        <h1>
+            <picture>
+                <source
+                    srcset="/static/asset/img/logo.jpeg"
+                    media="(prefers-color-scheme: dark)">
+                 <img src="/static/asset/img/logo.jpeg" alt="Django administration">
+            </picture>
+        </h1>
+    </div>
+
+    <div class="card">
+        <div class="card-body">
+            {% if messages %}
+            <div class="messages">
+                {% for message in messages %}
+                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                    {{ message }}
+                </div>
+                {% endfor %}
+            </div>
+            {% endif %}
+            
+    <p class="login-box-msg">Welcome To The Store </p>
+    <form id="loginForm" action="" method="post">
+        {% csrf_token %}          
+        
+        <div class="input-group mb-3">
+            <input type="text" name="username" class="form-control" placeholder="Username" required>
+            <div class="input-group-append">
+                <div class="input-group-text">
+                    <span class="fas fa-user"></span>
+                </div>
+            </div>
+        </div>
+        <div class="input-group mb-3">
+            <input type="password" name="password" id="password" class="form-control" placeholder="Password" required>
+            <div class="input-group-append">
+                <div class="input-group-text">
+                    <span>
+                        <i class="fas fa-eye text-muted" id="toggleIcon" style="cursor: pointer;" onclick="togglePassword()"></i>
+                    </span>
+                </div>
+            </div>
+        </div>
+        
+        
+        <div class="row">
+            <div class="col-12">
+                <button type="submit" id="loginButton" class="btn btn-primary btn-block">
+                    Log in
+                </button>
+            </div>
+        </div>
+    </form>
+
+        </div>
+    </div>
+</div>
+
+<!-- jQuery -->
+<script src="/static/admin/js/vendor/jquery/jquery.js"></script>
+<!-- Bootstrap 4 -->
+<script src="/static/vendor/bootstrap/js/bootstrap.min.js"></script>
+<!-- AdminLTE App -->
+<script src="/static/vendor/adminlte/js/adminlte.min.js"></script>
+
+<script>
+        document.addEventListener('DOMContentLoaded', function() {
+        const form = document.getElementById('loginForm');
+        const button = document.getElementById('loginButton');
+
+        form.addEventListener('submit', function(e) {
+            button.disabled = true;
+            button.innerHTML = '<span class="spinner"></span>Processing...';
+        });
+    });
+
+    function togglePassword() {
+        const passwordInput = document.getElementById('password');
+        const toggleIcon = document.getElementById('toggleIcon');
+        
+        if (passwordInput.type === 'password') {
+            passwordInput.type = 'text';
+            toggleIcon.classList.remove('fa-eye');
+            toggleIcon.classList.add('fa-eye-slash');
+        } else {
+            passwordInput.type = 'password';
+            toggleIcon.classList.remove('fa-eye-slash');
+            toggleIcon.classList.add('fa-eye');
+        }
+    }
+</script>
+
+</body>
+</html>
